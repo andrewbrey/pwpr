@@ -3,6 +3,10 @@
 A small utility wrapper around playwright [https://playwright.dev] which makes it simple
 to fetch, prerender, and return the html contents of javascript rendered pages.
 
+[![Version](https://img.shields.io/npm/v/pwpr.svg)](https://npmjs.org/package/pwpr)
+[![Downloads/week](https://img.shields.io/npm/dw/pwpr.svg)](https://npmjs.org/package/pwpr)
+[![License](https://img.shields.io/npm/l/pwpr.svg)](https://github.com/andrewbrey/pwpr/blob/master/package.json)
+
 **USAGE**
 ```bash
   $ npx pwpr <options>
