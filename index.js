@@ -1,38 +1,40 @@
-#!/usr/bin/env node
-
-import chalk from 'chalk';
-import { default as fs } from 'fs-extra';
-import minimist from 'minimist';
-import { chromium } from 'playwright';
+const chalk = require('chalk');
+const fs = require('fs-extra');
+const minimist = require('minimist');
+const { chromium } = require('playwright');
 
 const argv = minimist(process.argv.slice(2));
 
-if (argv.h || argv.help || argv._[0] === 'help') {
-  help();
-} else {
-  let browser;
+main();
 
-  try {
-    if (argv.url) {
-      const url = argv.url.startsWith('http') ? argv.url : `https://${argv.url}`;
+async function main() {
+  if (argv.h || argv.help || argv._[0] === 'help') {
+    help();
+  } else {
+    let browser;
 
-      browser = await chromium.launch({ headless: true });
-      let page = await browser.newPage();
-      await page.goto(url);
-      const content = await page.content();
+    try {
+      if (argv.url) {
+        const url = argv.url.startsWith('http') ? argv.url : `https://${argv.url}`;
 
-      if (argv.output) {
-        await fs.writeFile(`${argv.output}`, content, { encoding: 'utf-8' });
+        browser = await chromium.launch({ headless: true });
+        let page = await browser.newPage();
+        await page.goto(url);
+        const content = await page.content();
+
+        if (argv.output) {
+          await fs.writeFile(`${argv.output}`, content, { encoding: 'utf-8' });
+        } else {
+          console.log(content);
+        }
       } else {
-        console.log(content);
+        help();
       }
-    } else {
-      help();
+    } catch (error) {
+      throw error;
+    } finally {
+      browser && (await browser.close());
     }
-  } catch (error) {
-    throw error;
-  } finally {
-    browser && (await browser.close());
   }
 }
 

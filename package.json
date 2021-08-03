@@ -9,9 +9,9 @@
     "url": "https://github.com/andrewbrey/pwpr.git"
   },
   "bugs": "https://github.com/andrewbrey/pwpr/issues",
-  "main": "index.mjs",
+  "main": "index.js",
   "bin": {
-    "pwpr": "index.mjs"
+    "pwpr": "./bin/run"
   },
   "dependencies": {
     "chalk": "4.1.2",
@@ -23,6 +23,9 @@
     "@types/fs-extra": "9.0.12",
     "@types/minimist": "1.2.2"
   },
+  "files": [
+    "/bin"
+  ],
   "engines": {
     "node": ">=14.8.0"
   },
