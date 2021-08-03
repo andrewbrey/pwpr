@@ -24,7 +24,7 @@
     "@types/minimist": "1.2.2"
   },
   "files": [
-    "/bin"
+    "bin/"
   ],
   "engines": {
     "node": ">=14.8.0"
