@@ -5,30 +5,54 @@ const { chromium } = require('playwright');
 
 const argv = minimist(process.argv.slice(2));
 
+const options = {
+  help: argv.h || argv.help || argv._[0] === 'help',
+  url: (argv.url || '').trim(),
+  networkTimeout: Number(argv.network) || 30000,
+  jsTimeout: Number(argv.js) || 5000,
+  sleep: Number(argv.sleep) || 1000,
+  domSelector: (argv.selector || '').trim(),
+  outputPath: (argv.output || '').trim(),
+  showBrowser: Boolean(argv.show),
+  debug: Boolean(argv.debug),
+};
+
+if (options.debug) {
+  console.log({ options });
+}
+
 main();
 
 async function main() {
-  if (argv.h || argv.help || argv._[0] === 'help') {
+  if (options.help) {
     help();
   } else {
     let browser;
 
     try {
-      if (argv.url) {
-        const url = argv.url.startsWith('http') ? argv.url : `https://${argv.url}`;
+      if (options.url) {
+        const url = options.url.startsWith('http') ? options.url : `https://${options.url}`;
 
-        browser = await chromium.launch({ headless: true });
+        browser = await chromium.launch({ headless: !options.showBrowser });
         let page = await browser.newPage();
-        await page.goto(url);
+        await page.goto(url, { waitUntil: 'load', timeout: options.networkTimeout });
+
+        if (options.domSelector) {
+          await page.waitForSelector(options.domSelector, { timeout: options.jsTimeout });
+        } else {
+          await page.waitForTimeout(options.sleep);
+        }
+
         const content = await page.content();
 
-        if (argv.output) {
-          await fs.writeFile(`${argv.output}`, content, { encoding: 'utf-8' });
+        if (options.outputPath) {
+          await fs.writeFile(`${options.outputPath}`, content, { encoding: 'utf-8' });
         } else {
           console.log(content);
         }
       } else {
-        help();
+        console.log(`
+${chalk.yellow('Missing required option --url. Run again with the --help option to see CLI help.')}`);
       }
     } catch (error) {
       throw error;
