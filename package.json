@@ -1,6 +1,6 @@
 {
   "name": "pwpr",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "A small CLI utility wrapper around playwright to make it easy to prerender a javascript rendered webpage",
   "license": "MIT",
   "author": "Andrew Brey <34140052+andrewbrey@users.noreply.github.com>",
