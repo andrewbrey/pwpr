@@ -92,7 +92,7 @@ ${chalk.bold('OPTIONS')}
   --network     ${chalk.dim(`the timeout in milliseconds to wait for the page to load (default ${def.networkTimeout})`)}
   --js          ${chalk.dim(`the timeout in milliseconds to wait for JS execution (default ${def.jsTimeout})`)}
                 ${chalk.dim('(only used if option --selector is provided)')}
-  --selector    ${chalk.dim(`the css selector to wait for before capturing the page (default ${def.jsTimeout})`)}
+  --selector    ${chalk.dim('the css selector to wait for before capturing the page')}
   --sleep       ${chalk.dim(`the timeout in milliseconds to wait before capturing the page (default ${def.sleep})`)}
                 ${chalk.dim('(only used if option --selector is *not* provided)')}
   --show        ${chalk.dim('if provided and not empty, will cause the browser to be shown (default false)')}
