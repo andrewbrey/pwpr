@@ -22,7 +22,7 @@ to fetch, prerender, and return the html contents of javascript rendered pages.
   --network     the timeout in milliseconds to wait for the page to load (default 30000)
   --js          the timeout in milliseconds to wait for JS execution (default 5000)
                 (only used if option --selector is provided)
-  --selector    the css selector to wait for before capturing the page (default 5000)
+  --selector    the css selector to wait for before capturing the page
   --sleep       the timeout in milliseconds to wait before capturing the page (default 1000)
                 (only used if option --selector is *not* provided)
   --show        if provided and not empty, will cause the browser to be shown (default false)
