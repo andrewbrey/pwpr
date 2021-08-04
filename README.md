@@ -19,9 +19,10 @@ $ npx pwpr <options>
               (if either http or https protocol not specified, https will be assumed)
 
 --output      a valid file path into which the page content should be saved
-              (if omitted, page content will print to stdout)
+              (if omitted, page content will print to stdout; if present and lacking a
+              file extension, .html will be assumed)
 
---network     the timeout in milliseconds to wait for the page to load (default 30000)
+--load        the timeout in milliseconds to wait for the page to load (default 30000)
 --js          the timeout in milliseconds to wait for JS execution (default 5000)
               (only used if option --selector is provided)
 
@@ -44,7 +45,7 @@ npx pwpr --url=http://example.com
 npx pwpr --url=example.com
 # prerenders https://example.com and prints to stdout
 
-npx pwpr --url=example.com --network=60000
+npx pwpr --url=example.com --load=60000
 # prerenders https://example.com after allowing *up to* 60 seconds for the
 # document to fire the "load" event, and prints to stdout
 

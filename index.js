@@ -2,11 +2,16 @@ const chalk = require('chalk');
 const fs = require('fs-extra');
 const minimist = require('minimist');
 const { chromium } = require('playwright');
+const { extname } = require('path');
 
-const argv = minimist(process.argv.slice(2));
+const argv = minimist(process.argv.slice(2), {
+  string: ['url', 'output', 'load', 'js', 'selector', 'sleep', 'ua'],
+  boolean: ['help', 'show', 'debug'],
+  alias: { network: 'load' },
+});
 
 const def = {
-  networkTimeout: 30000,
+  loadTimeout: 30000,
   jsTimeout: 5000,
   sleep: 1000,
 };
@@ -15,17 +20,17 @@ const options = {
   help: argv.h || argv.help || argv._[0] === 'help',
   url: (argv.url || '').trim(),
   outputPath: (argv.output || '').trim(),
-  networkTimeout: Number(argv.network) || def.networkTimeout,
+  loadTimeout: Number(argv.load) || def.loadTimeout,
   jsTimeout: Number(argv.js) || def.jsTimeout,
   domSelector: (argv.selector || '').trim(),
   sleep: Number(argv.sleep) || def.sleep,
   userAgent: (argv.ua || '').trim(),
-  showBrowser: Boolean(argv.show),
-  debug: Boolean(argv.debug),
+  showBrowser: argv.show,
+  debug: argv.debug,
 };
 
 if (options.debug) {
-  console.log({ options });
+  console.log({ argv, parsedOptions: options });
 }
 
 main();
@@ -43,7 +48,7 @@ async function main() {
         browser = await chromium.launch({ headless: !options.showBrowser });
         let context = await browser.newContext({ userAgent: options.userAgent });
         let page = await context.newPage();
-        await page.goto(url, { waitUntil: 'load', timeout: options.networkTimeout });
+        await page.goto(url, { waitUntil: 'load', timeout: options.loadTimeout });
 
         if (options.domSelector) {
           await page.waitForSelector(options.domSelector, { timeout: options.jsTimeout });
@@ -54,7 +59,9 @@ async function main() {
         const content = await page.content();
 
         if (options.outputPath) {
-          await fs.writeFile(`${options.outputPath}`, content, { encoding: 'utf-8' });
+          const outputFile = extname(options.outputPath) ? options.outputPath : `${options.outputPath}.html`;
+
+          await fs.writeFile(outputFile, content, { encoding: 'utf-8' });
         } else {
           console.log(content);
         }
@@ -91,9 +98,10 @@ ${chalk.bold('OPTIONS')}
                 ${chalk.dim('(if either http or https protocol not specified, https will be assumed)')}
 
   --output      ${chalk.dim('a valid file path into which the page content should be saved')}
-                ${chalk.dim('(if omitted, page content will print to stdout)')}
+                ${chalk.dim('(if omitted, page content will print to stdout; if present and lacking a')}
+                ${chalk.dim('file extension, .html will be assumed)')}
 
-  --network     ${chalk.dim(`the timeout in milliseconds to wait for the page to load (default ${def.networkTimeout})`)}
+  --load        ${chalk.dim(`the timeout in milliseconds to wait for the page to load (default ${def.loadTimeout})`)}
   --js          ${chalk.dim(`the timeout in milliseconds to wait for JS execution (default ${def.jsTimeout})`)}
                 ${chalk.dim('(only used if option --selector is provided)')}
 
@@ -115,7 +123,7 @@ ${chalk.bold('EXAMPLES')}
     npx ${bin} --url=example.com
     ${chalk.green('# prerenders https://example.com and prints to stdout')}
 
-    npx ${bin} --url=example.com --network=60000
+    npx ${bin} --url=example.com --load=60000
     ${chalk.green('# prerenders https://example.com after allowing *up to* 60 seconds for the')}
     ${chalk.green('# document to fire the "load" event, and prints to stdout')}
 
