@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "chalk": "5.0.1",
-    "fs-extra": "10.0.1",
+    "fs-extra": "10.1.0",
     "minimist": "1.2.6",
-    "playwright": "1.20.2"
+    "playwright": "1.22.2"
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
