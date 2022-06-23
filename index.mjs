@@ -6,6 +6,8 @@ import minimist from "minimist";
 import { extname } from "path";
 import { chromium } from "playwright";
 
+const { version } = await fs.readJSON("package.json", { encoding: "utf-8" });
+
 const argv = minimist(process.argv.slice(2), {
   string: ["url", "output", "load", "js", "selector", "sleep", "ua", "locale"],
   boolean: ["help", "show", "debug"],
@@ -33,7 +35,7 @@ const options = {
 };
 
 if (options.debug) {
-  console.log({ argv, parsedOptions: options });
+  console.log({ version, argv, parsedOptions: options });
 }
 
 main();
