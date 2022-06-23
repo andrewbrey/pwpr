@@ -3,10 +3,15 @@
 import chalk from "chalk";
 import fs from "fs-extra";
 import minimist from "minimist";
-import { extname } from "path";
+import { dirname, extname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
-const { version } = await fs.readJSON("package.json", { encoding: "utf-8" });
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const { version } = await fs.readJSON(join(__dirname, "package.json"), {
+  encoding: "utf-8",
+});
 
 const argv = minimist(process.argv.slice(2), {
   string: ["url", "output", "load", "js", "selector", "sleep", "ua", "locale"],
