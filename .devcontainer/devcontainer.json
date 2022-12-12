@@ -1,0 +1,25 @@
+{
+	"name": "dotfiles",
+	"dockerFile": "Dockerfile",
+	"build": {
+		"args": {
+			"BUILD_REPO": "${localEnv:DOTFILES_REPO}",
+			"BUILD_PASSPHRASE": "${localEnv:DOTFILES_PASSPHRASE}"
+		}
+	},
+	"postCreateCommand": [".devcontainer/post-create.sh"],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"foxundermoon.shell-format",
+				"Gruntfuggly.todo-tree",
+				"meganrogge.template-string-converter",
+				"EditorConfig.EditorConfig"
+			],
+			"settings": {
+				"shellformat.useEditorConfig": true,
+				"shellformat.path": "/home/vscode/.local/bin/shfmt"
+			}
+		}
+	}
+}
