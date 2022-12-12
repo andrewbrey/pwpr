@@ -14,7 +14,8 @@
 				"foxundermoon.shell-format",
 				"Gruntfuggly.todo-tree",
 				"meganrogge.template-string-converter",
-				"EditorConfig.EditorConfig"
+				"EditorConfig.EditorConfig",
+				"esbenp.prettier-vscode"
 			],
 			"settings": {
 				"shellformat.useEditorConfig": true,
