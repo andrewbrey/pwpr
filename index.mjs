@@ -48,7 +48,7 @@ if (options.debug) {
 	console.log({ version, playwrightVersion, argv, parsedOptions: options });
 }
 
-main().catch((e) => console.log("errorrrrrr", e));
+main();
 
 async function main() {
 	if (options.help) {
